@@ -1,5 +1,6 @@
 package cn.he.zhao.ctg.mongodb.client;
 
+import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -7,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gt;
 
 /**
  * Created by HeFeng on 2018/2/28.
@@ -34,22 +36,30 @@ public class Client {
         Document myDoc = collection.find().first();
         System.out.println(myDoc.toJson());
 
-        //遍历集合1
-        MongoCursor<Document> cursor = collection.find().iterator();
-        try {
-            while (cursor.hasNext()) {
-                System.out.println(cursor.next().toJson());
-            }
-        } finally {
-            cursor.close();
-        }
-
-        //遍历集合1
-        for (Document cur : collection.find()) {
-            System.out.println(cur.toJson());
-        }
+//        //遍历集合1
+//        MongoCursor<Document> cursor = collection.find().iterator();
+//        try {
+//            while (cursor.hasNext()) {
+//                System.out.println(cursor.next().toJson());
+//            }
+//        } finally {
+//            cursor.close();
+//        }
+//
+//        //遍历集合1
+//        for (Document cur : collection.find()) {
+//            System.out.println(cur.toJson());
+//        }
 
         myDoc = collection.find(eq("name", "MongoDB")).first();
         System.out.println(myDoc.toJson());
+
+        Block<Document> printBlock = new Block<Document>() {
+            @Override
+            public void apply(final Document document) {
+                System.out.println(document.toJson());
+            }
+        };
+        collection.find(eq("name", "MongoDB")).forEach(printBlock);
     }
 }
