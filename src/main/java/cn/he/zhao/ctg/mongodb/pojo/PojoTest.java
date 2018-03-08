@@ -29,10 +29,10 @@ public class PojoTest {
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
         MongoClient mongoClient = new MongoClient( "132.122.232.234" , 27017 );
-        MongoDatabase database = mongoClient.getDatabase("test");
+        MongoDatabase database = mongoClient.getDatabase("hf");
         database = database.withCodecRegistry(pojoCodecRegistry);
 
-        MongoCollection<Person> collection = database.getCollection("people", Person.class);
+        MongoCollection<Person> collection = database.getCollection("person", Person.class);
 
         Person ada = new Person("Ada Byron", 20, new Address("St James Square", "London", "W1"));
 
@@ -65,10 +65,10 @@ public class PojoTest {
         UpdateResult updateResult = collection.updateMany(not(eq("zip", null)), set("zip", null));
         System.out.println(updateResult.getModifiedCount());
 
-        collection.deleteOne(eq("address.city", "Wimborne"));
-
-        DeleteResult deleteResult = collection.deleteMany(eq("address.city", "London"));
-
-        System.out.println(deleteResult.getDeletedCount());
+//        collection.deleteOne(eq("address.city", "Wimborne"));
+//
+//        DeleteResult deleteResult = collection.deleteMany(eq("address.city", "London"));
+//
+//        System.out.println(deleteResult.getDeletedCount());
     }
 }
